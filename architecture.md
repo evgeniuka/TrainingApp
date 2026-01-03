@@ -1,3 +1,6 @@
+# FitCoach / TrainingApp — System Architecture
+
+```mermaid
 flowchart LR
   subgraph Clients[Clients (React)]
     TrainerUI[Trainer UI (React)]
@@ -16,18 +19,15 @@ flowchart LR
 
   DB[(Firebase Database)]
 
-  %% Login + Auth
   TrainerUI -->|POST /auth/login| API
   TraineeUI -->|POST /auth/login| API
   API --> Auth
   Auth -->|JWT token| TrainerUI
   Auth -->|JWT token| TraineeUI
 
-  %% Core CRUD
   TrainerUI -->|Trainees/Programs CRUD| API
   API <--> DB
 
-  %% Sessions (start/live/end)
   TrainerUI -->|POST /sessions (2–4 trainees)| API
   API --> SessionSvc
   SessionSvc --> LogSvc
@@ -37,10 +37,8 @@ flowchart LR
   WS --> Auth
   WS --> SessionSvc
   SessionSvc --> LogSvc
-
   LogSvc --> DB
 
-  %% Reports
   TrainerUI -->|History| API --> HistorySvc
   TraineeUI -->|History| API --> HistorySvc
   TrainerUI -->|Analytics| API --> AnalyticsSvc
